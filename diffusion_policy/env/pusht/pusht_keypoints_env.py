@@ -7,23 +7,25 @@ import numpy as np
 class PushTKeypointsEnv(PushTEnv):
     def __init__(self,
             legacy=False,
-            block_cog=None, 
+            block_cog=None,
             damping=None,
             render_size=96,
-            keypoint_visible_rate=1.0, 
+            keypoint_visible_rate=1.0,
             agent_keypoints=False,
             draw_keypoints=False,
             reset_to_state=None,
             render_action=True,
-            local_keypoint_map: Dict[str, np.ndarray]=None, 
-            color_map: Optional[Dict[str, np.ndarray]]=None):
+            local_keypoint_map: Dict[str, np.ndarray]=None,
+            color_map: Optional[Dict[str, np.ndarray]]=None,
+            block_shape='tee'):
         super().__init__(
-            legacy=legacy, 
+            legacy=legacy,
             block_cog=block_cog,
             damping=damping,
             render_size=render_size,
             reset_to_state=reset_to_state,
-            render_action=render_action)
+            render_action=render_action,
+            block_shape=block_shape)
         ws = self.window_size
 
         if local_keypoint_map is None:
@@ -69,8 +71,8 @@ class PushTKeypointsEnv(PushTEnv):
         self.draw_kp_map = None
 
     @classmethod
-    def genenerate_keypoint_manager_params(cls):
-        env = PushTEnv()
+    def genenerate_keypoint_manager_params(cls, block_shape='tee'):
+        env = PushTEnv(block_shape=block_shape)
         kp_manager = PymunkKeypointManager.create_from_pusht_env(env)
         kp_kwargs = kp_manager.kwargs
         return kp_kwargs

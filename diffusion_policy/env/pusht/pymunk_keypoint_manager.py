@@ -60,7 +60,10 @@ class PymunkKeypointManager:
                 self.agent = obj = self.add_circle((256, 400), 15)
                 n_kps = n_agent_kps
             else:
-                self.block = obj = self.add_tee((256, 300), 0)
+                if hasattr(env, 'block_shape') and env.block_shape == 'f':
+                    self.block = obj = self.add_f((256, 300), 0)
+                else:
+                    self.block = obj = self.add_tee((256, 300), 0)
                 n_kps = n_block_kps
             
             self.screen = pygame.Surface((512,512))

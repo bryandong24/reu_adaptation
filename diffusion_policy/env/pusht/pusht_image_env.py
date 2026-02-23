@@ -8,15 +8,17 @@ class PushTImageEnv(PushTEnv):
 
     def __init__(self,
             legacy=False,
-            block_cog=None, 
+            block_cog=None,
             damping=None,
-            render_size=96):
+            render_size=96,
+            block_shape='tee'):
         super().__init__(
-            legacy=legacy, 
+            legacy=legacy,
             block_cog=block_cog,
             damping=damping,
             render_size=render_size,
-            render_action=False)
+            render_action=False,
+            block_shape=block_shape)
         ws = self.window_size
         self.observation_space = spaces.Dict({
             'image': spaces.Box(

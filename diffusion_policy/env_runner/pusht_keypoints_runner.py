@@ -37,7 +37,8 @@ class PushTKeypointsRunner(BaseLowdimRunner):
             agent_keypoints=False,
             past_action=False,
             tqdm_interval_sec=5.0,
-            n_envs=None
+            n_envs=None,
+            block_shape='tee'
         ):
         super().__init__(output_dir)
 
@@ -51,7 +52,7 @@ class PushTKeypointsRunner(BaseLowdimRunner):
         env_n_action_steps = n_action_steps
 
         # assert n_obs_steps <= n_action_steps
-        kp_kwargs = PushTKeypointsEnv.genenerate_keypoint_manager_params()
+        kp_kwargs = PushTKeypointsEnv.genenerate_keypoint_manager_params(block_shape=block_shape)
 
         def env_fn():
             return MultiStepWrapper(
@@ -60,6 +61,7 @@ class PushTKeypointsRunner(BaseLowdimRunner):
                         legacy=legacy_test,
                         keypoint_visible_rate=keypoint_visible_rate,
                         agent_keypoints=agent_keypoints,
+                        block_shape=block_shape,
                         **kp_kwargs
                     ),
                     video_recoder=VideoRecorder.create_h264(

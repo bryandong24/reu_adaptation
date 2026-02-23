@@ -30,12 +30,14 @@ class PushTEnv(gym.Env):
     reward_range = (0., 1.)
 
     def __init__(self,
-            legacy=False, 
+            legacy=False,
             block_cog=None, damping=None,
             render_action=True,
             render_size=96,
-            reset_to_state=None
+            reset_to_state=None,
+            block_shape='tee'
         ):
+        self.block_shape = block_shape
         self._seed = None
         self.seed()
         self.window_size = ws = 512  # The size of the PyGame window
@@ -303,7 +305,10 @@ class PushTEnv(gym.Env):
 
         # Add agent, block, and goal zone.
         self.agent = self.add_circle((256, 400), 15)
-        self.block = self.add_tee((256, 300), 0)
+        if self.block_shape == 'f':
+            self.block = self.add_f((256, 300), 0)
+        else:
+            self.block = self.add_tee((256, 300), 0)
         self.goal_color = pygame.Color('LightGreen')
         self.goal_pose = np.array([256,256,np.pi/4])  # x, y, theta (in radians)
 
@@ -364,4 +369,48 @@ class PushTEnv(gym.Env):
         body.angle = angle
         body.friction = 1
         self.space.add(body, shape1, shape2)
+        return body
+
+    def add_f(self, position, angle, scale=30, color='LightSlateGray', mask=pymunk.ShapeFilter.ALL_MASKS()):
+        mass = 1
+        length = 4
+        left = -length * scale / 2       # -60
+        spine_right = left + scale        # -30
+        right = left + 3 * scale          # 30  (top bar: 60px from spine)
+        mid_right = left + 2.5 * scale    # 15  (mid bar: 45px from spine)
+
+        # Vertical bar (left spine, full height)
+        vertices1 = [(left, 0),
+                     (spine_right, 0),
+                     (spine_right, length * scale),
+                     (left, length * scale)]
+        # Top horizontal bar (extends right from spine)
+        vertices2 = [(spine_right, (length - 1) * scale),
+                     (right, (length - 1) * scale),
+                     (right, length * scale),
+                     (spine_right, length * scale)]
+        # Middle horizontal bar (shorter, extends right from spine)
+        vertices3 = [(spine_right, (length / 2 - 0.5) * scale),
+                     (mid_right, (length / 2 - 0.5) * scale),
+                     (mid_right, (length / 2 + 0.5) * scale),
+                     (spine_right, (length / 2 + 0.5) * scale)]
+
+        inertia1 = pymunk.moment_for_poly(mass, vertices=vertices1)
+        inertia2 = pymunk.moment_for_poly(mass, vertices=vertices2)
+        inertia3 = pymunk.moment_for_poly(mass, vertices=vertices3)
+        body = pymunk.Body(mass, inertia1 + inertia2 + inertia3)
+        shape1 = pymunk.Poly(body, vertices1)
+        shape2 = pymunk.Poly(body, vertices2)
+        shape3 = pymunk.Poly(body, vertices3)
+        shape1.color = pygame.Color(color)
+        shape2.color = pygame.Color(color)
+        shape3.color = pygame.Color(color)
+        shape1.filter = pymunk.ShapeFilter(mask=mask)
+        shape2.filter = pymunk.ShapeFilter(mask=mask)
+        shape3.filter = pymunk.ShapeFilter(mask=mask)
+        body.center_of_gravity = (shape1.center_of_gravity + shape2.center_of_gravity + shape3.center_of_gravity) / 3
+        body.position = position
+        body.angle = angle
+        body.friction = 1
+        self.space.add(body, shape1, shape2, shape3)
         return body

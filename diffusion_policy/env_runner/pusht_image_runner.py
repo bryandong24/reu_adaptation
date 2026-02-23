@@ -35,7 +35,8 @@ class PushTImageRunner(BaseImageRunner):
             render_size=96,
             past_action=False,
             tqdm_interval_sec=5.0,
-            n_envs=None
+            n_envs=None,
+            block_shape='tee'
         ):
         super().__init__(output_dir)
         if n_envs is None:
@@ -47,7 +48,8 @@ class PushTImageRunner(BaseImageRunner):
                 VideoRecordingWrapper(
                     PushTImageEnv(
                         legacy=legacy_test,
-                        render_size=render_size
+                        render_size=render_size,
+                        block_shape=block_shape
                     ),
                     video_recoder=VideoRecorder.create_h264(
                         fps=fps,
