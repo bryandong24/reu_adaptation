@@ -99,7 +99,6 @@ Below are example rollouts of the trained policy (epoch 250 checkpoint):
 <img src="report/videos/test_90s_2.gif" width="256" alt="90s eval 2">
 </p>
 
-You can also view evaluation videos on the [Weights & Biases run page](https://wandb.ai/bryandong24-stanford-university/diffusion_policy_pushf).
 
 ## Challenges
 
