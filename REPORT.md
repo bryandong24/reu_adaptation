@@ -166,7 +166,7 @@ python eval_sweep.py
 
 ### Model Checkpoint
 
-The trained model checkpoint (~4.3 GB) is too large for GitHub. It is available at: **[TODO: Upload to Hugging Face and add link]**
+The trained model checkpoint (~4.3 GB) is too large for GitHub. It is available at: **[huggingface.co/bryandong/pushf-diffusion-policy](https://huggingface.co/bryandong/pushf-diffusion-policy)**
 
 The checkpoint includes the full model weights, EMA weights, optimizer state, and training configuration.
 
