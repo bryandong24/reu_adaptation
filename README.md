@@ -19,7 +19,7 @@ The Push-T environment defines the T-shaped block as two pymunk rectangles (a ho
 
 ### Data Collection
 
-I collected **101 human demonstrations** using the mouse-based teleoperation interface (`demo_pushf.py`) on my local MacBook, then uploaded the data to a GCP H100 machine for training. Each demonstration involved pushing the F-block from a random initial pose into the green target area.
+I collected **101 human demonstrations** using the mouse-based teleoperation interface (`demo_pushf.py`) on my own MacBook, then uploaded the data to a remote H100 machine for training. Each demonstration involved pushing the F-block from a random initial pose into the green target area.
 
 ### Training
 
@@ -43,11 +43,11 @@ The model checkpoint is available on Hugging Face (see [Reproducing Results](#re
 
 The test mean score (evaluated every 50 epochs on 50 held-out environment seeds) rapidly improved to ~0.75 by epoch 50 and plateaued around 0.84-0.88 by epoch 200. The best checkpoint was at **epoch 250** with a test mean score of 0.880 under the default 30-second evaluation limit.
 
-An interesting observation: validation loss began increasing after epoch 50, while task performance continued to improve. This demonstrates that for behavioral cloning with diffusion models, **the denoising loss is only a proxy** -- the actual task metric (geometric overlap coverage) can improve even as the surrogate loss overfits.
+An interesting observation: validation loss began increasing after epoch 50, while task performance continued to improve. This probably means that for behavioral cloning with diffusion models, the denoising loss is only a proxy -- the actual task metric (geometric overlap coverage) can improve even as the surrogate loss overfits.
 
 ### Evaluation Time Limit Analysis
 
-A key finding was that the default 30-second evaluation window was too short for many test seeds. Because this is pure behavioral cloning (supervised learning on demonstrations, no reinforcement learning), the policy imitates the speed of the demonstrations. My demonstrations averaged ~30.5 seconds, so the policy naturally takes about that long.
+A key finding was that the default 30-second evaluation window was too short for many test seeds. Because this is pure behavioral cloning (supervised learning on demonstrations, no reinforcement learning), the policy imitates the speed of the demonstrations. My demonstrations averaged ~30 seconds, so the policy naturally takes about that long.
 
 I evaluated the best checkpoint (epoch 250) across multiple time limits:
 
@@ -62,7 +62,7 @@ I evaluated the best checkpoint (epoch 250) across multiple time limits:
 | 60s        | 0.961      | 45/50               | 45/50       |
 | **90s**    | **1.000**  | **50/50**           | **50/50**   |
 
-With 90 seconds, the epoch 250 checkpoint achieves a **perfect score on all 50 test seeds**. This confirms that the policy has learned the correct behavior -- it simply needs sufficient time to execute it.
+With 90 seconds, the epoch 250 checkpoint achieves a **perfect score on all 50 test seeds**. This confirms that the policy has learned the correct behavior -- it simply needs sufficient time to execute it. (My poor pushing skills meant the policy would only be as good as my bad pushing skills.)
 
 I also compared across checkpoints to test whether later (more overfit) checkpoints might perform better with more time:
 
@@ -104,7 +104,7 @@ Below are example rollouts of the trained policy (epoch 250 checkpoint):
 
 ### Human Demonstration Difficulty
 
-The most surprising challenge was how difficult the Push-F task is *for a human*. While translating the F-block toward the target is straightforward, **rotating it into the correct orientation is genuinely hard**. The F-shape's asymmetry and the indirect nature of pushing (you can only push, not grab) make precise rotation control very tricky. Collecting fast, clean demonstrations required significant practice, and my average demonstration time of ~30.5 seconds reflects this difficulty.
+The most surprising challenge was how difficult the Push-F task is *for a human*. While translating the F-block toward the target is straightforward, **rotating it into the correct orientation is genuinely hard**. The F-shape's asymmetry and the underactuated nature of how we can control the F makes precise rotation control very tricky. Collecting fast, clean demonstrations required some time to get used to, and my average demonstration time of ~30 seconds reflects this difficulty.
 
 ### Evaluation Time Mismatch
 
@@ -122,7 +122,7 @@ I also found the analysis of evaluation time limits interesting. It was a good e
 
 ## What I Enjoyed Less
 
-The dependency management was tedious. Getting the right combination of Python, PyTorch, gym, numpy, and pymunk versions to work together on a modern H100 GPU required some trial and error. This is a common pain point in research codebases that pin old versions.
+The dependency management was tedious. Getting the right combination of Python, PyTorch, gym, numpy, and pymunk versions to work together on a modern H100 GPU required some trial and error. I have expereinced this before and Claude was very nice and helpful in bashing the dependencies.
 
 ## Reproducing Results
 
@@ -162,7 +162,7 @@ wandb login
 python train.py --config-name=train_diffusion_unet_image_pushf_workspace
 ```
 
-Training runs for 3000 epochs by default. Good performance is typically reached by epoch 250.
+Training runs for 3000 epochs by default according to the original codebase. I only needed to run for 250 epochs before we started overfitting and getting worse performance.
 
 ### Evaluating a Checkpoint
 
@@ -178,7 +178,7 @@ python eval_sweep.py
 
 ### Model Checkpoint
 
-The trained model checkpoint (~4.3 GB) is too large for GitHub. It is available at: **[huggingface.co/bryandong/pushf-diffusion-policy](https://huggingface.co/bryandong/pushf-diffusion-policy)**
+The trained model checkpoint (~4.3 GB) is too large for GitHub. So, it is available at: **[huggingface.co/bryandong/pushf-diffusion-policy](https://huggingface.co/bryandong/pushf-diffusion-policy)**
 
 The checkpoint includes the full model weights, EMA weights, optimizer state, and training configuration.
 
