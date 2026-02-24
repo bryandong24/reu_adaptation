@@ -78,13 +78,44 @@ Epoch 250 dominates across all time limits. Later checkpoints show mild overfitt
 
 Below are example rollouts of the trained policy (epoch 250 checkpoint):
 
-Video files are located in the [`report/videos/`](report/videos/) directory:
+**30-second evaluation (default):**
 
-| Time Limit | Video 1 | Video 2 |
-|:----------:|:-------:|:-------:|
-| 30s | [test_30s_1.mp4](report/videos/test_30s_1.mp4) | [test_30s_2.mp4](report/videos/test_30s_2.mp4) |
-| 60s | [test_60s_1.mp4](report/videos/test_60s_1.mp4) | [test_60s_2.mp4](report/videos/test_60s_2.mp4) |
-| 90s | [test_90s_1.mp4](report/videos/test_90s_1.mp4) | [test_90s_2.mp4](report/videos/test_90s_2.mp4) |
+<table>
+<tr>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_30s_1.mp4" width="300" controls></video>
+</td>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_30s_2.mp4" width="300" controls></video>
+</td>
+</tr>
+</table>
+
+**60-second evaluation:**
+
+<table>
+<tr>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_60s_1.mp4" width="300" controls></video>
+</td>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_60s_2.mp4" width="300" controls></video>
+</td>
+</tr>
+</table>
+
+**90-second evaluation (perfect score):**
+
+<table>
+<tr>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_90s_1.mp4" width="300" controls></video>
+</td>
+<td>
+<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_90s_2.mp4" width="300" controls></video>
+</td>
+</tr>
+</table>
 
 You can also view evaluation videos on the [Weights & Biases run page](https://wandb.ai/bryandong24-stanford-university/diffusion_policy_pushf).
 
