@@ -80,42 +80,24 @@ Below are example rollouts of the trained policy (epoch 250 checkpoint):
 
 **30-second evaluation (default):**
 
-<table>
-<tr>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_30s_1.mp4" width="300" controls></video>
-</td>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_30s_2.mp4" width="300" controls></video>
-</td>
-</tr>
-</table>
+<p align="center">
+<img src="report/videos/test_30s_1.gif" width="256" alt="30s eval 1">
+<img src="report/videos/test_30s_2.gif" width="256" alt="30s eval 2">
+</p>
 
 **60-second evaluation:**
 
-<table>
-<tr>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_60s_1.mp4" width="300" controls></video>
-</td>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_60s_2.mp4" width="300" controls></video>
-</td>
-</tr>
-</table>
+<p align="center">
+<img src="report/videos/test_60s_1.gif" width="256" alt="60s eval 1">
+<img src="report/videos/test_60s_2.gif" width="256" alt="60s eval 2">
+</p>
 
 **90-second evaluation (perfect score):**
 
-<table>
-<tr>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_90s_1.mp4" width="300" controls></video>
-</td>
-<td>
-<video src="https://github.com/bryandong24/reu_adaptation/raw/main/report/videos/test_90s_2.mp4" width="300" controls></video>
-</td>
-</tr>
-</table>
+<p align="center">
+<img src="report/videos/test_90s_1.gif" width="256" alt="90s eval 1">
+<img src="report/videos/test_90s_2.gif" width="256" alt="90s eval 2">
+</p>
 
 You can also view evaluation videos on the [Weights & Biases run page](https://wandb.ai/bryandong24-stanford-university/diffusion_policy_pushf).
 
